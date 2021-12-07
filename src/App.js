@@ -78,7 +78,7 @@ function Recipe(props){
 function RecipeListItem(props){
   return (
     <div 
-      className="listItem"
+      className={`listItem ${props.index===props.activeRecipeIndex ? "activeItem" : ""}`}
       key={props.index}
       onClick={()=>props.handleClick(props.index)}
     >
@@ -91,6 +91,7 @@ function RecipeList(props){
   const listItems = props.recipes.map((recipe, r)=>{
     return <RecipeListItem 
       handleClick={props.handleClick}
+      activeRecipeIndex={props.activeRecipeIndex}
       recipe={recipe}
       index={r}
       key={r}

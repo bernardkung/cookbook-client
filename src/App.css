@@ -36,6 +36,10 @@
   background-color: #E9EDC9;
 }
 
+.activeItem {
+  background-color: #ccd5ae;
+}
+
 .recipe {
   background-color: #FAEDCD;
   height: 100%;
