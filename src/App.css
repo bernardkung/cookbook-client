@@ -40,6 +40,11 @@
   background-color: #ccd5ae;
 }
 
+h1 {
+  height: 50px;
+  margin: 0;
+}
+
 .recipe {
   background-color: #FAEDCD;
   height: 100%;
