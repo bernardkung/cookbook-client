@@ -31,9 +31,24 @@ function GetStarted(){
 
 function AddRecipe(){
   return (
-    <div className="addRecipe">
+    <div className="recipeForm">
       <h1>Add a New Recipe</h1>
-      <p>Coming Soon!</p>
+      <form className="inputRecipe">
+        <div className="inputPartGroup" id="inputNameGroup">
+          <label for="inputName">Name</label>
+          <input id="inputName" />
+        </div>
+        <div className="inputPartGroup" id="inputIngredientsGroup">
+          <label for="inputIngredients">Ingredients</label>
+          <textarea className="inputArea" id="inputIngredients" />
+        </div>
+        <div className="inputPartGroup" id="inputInstructionsGroup">
+          <label for="inputInstructions">Instructions</label>
+          <textarea className="inputArea" id="inputInstructions" />
+        </div>
+
+        <input type="submit" text="Submit" />
+      </form>
     </div>
   )
 }
@@ -48,9 +63,7 @@ function Recipe(props){
     )
   } else if (props.activeRecipeIndex===-2) {
     return (
-      <div className="recipe">
-        <AddRecipe />
-      </div>
+      <AddRecipe />
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
@@ -101,10 +114,9 @@ function RecipeList(props){
   const addItem = <div 
     className="listItem"
     onClick={()=>props.handleClick(-2)}
-  >
+    >
     Add New Recipe
   </div>
-  
 
   return (
     <div className="recipeList" key={1}>
