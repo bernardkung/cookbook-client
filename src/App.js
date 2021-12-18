@@ -132,6 +132,8 @@ function RecipeListItem(props){
 }
 
 function RecipeList(props){
+
+  // Ran into error here where props.recipes was undefined
   const listItems = props.recipes.map((recipe, r)=>{
     return <RecipeListItem 
       handleClick={props.handleClick}
@@ -141,7 +143,6 @@ function RecipeList(props){
       key={r}
     />
   })
-  
   const addItem = <div 
     className="listItem"
     onClick={()=>props.handleClick(-2)}
