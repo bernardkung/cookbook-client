@@ -29,25 +29,56 @@ function GetStarted(){
   )
 }
 
-function AddRecipe(){
+
+function AddRecipe(props){
+  const [recipe, setRecipe] = useState({
+    "name": "",
+    "ingredients": "",
+    "instructions": "",
+  })
+
+  function handleChange(event) {
+    event.persist()
+    setRecipe(recipe=>({
+      ...recipe,
+      [event.target.id]: event.target.value
+    }))
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    const recipeJson = {recipe}
+    props.addRecipe(recipeJson)
+  }
+
   return (
     <div className="recipeForm">
       <h1>Add a New Recipe</h1>
       <form className="inputRecipe">
         <div className="inputPartGroup" id="inputNameGroup">
-          <label for="inputName">Name</label>
-          <input id="inputName" />
+          <label htmlFor="name">Name</label>
+          <input id="name" value={recipe.name} onChange={handleChange}/>
         </div>
         <div className="inputPartGroup" id="inputIngredientsGroup">
-          <label for="inputIngredients">Ingredients</label>
-          <textarea className="inputArea" id="inputIngredients" />
+          <label htmlFor="ingredients">Ingredients</label>
+          <textarea 
+            id="ingredients" 
+            className="inputArea" 
+            value={recipe.ingredients} 
+            onChange={handleChange}
+          />
         </div>
         <div className="inputPartGroup" id="inputInstructionsGroup">
-          <label for="inputInstructions">Instructions</label>
-          <textarea className="inputArea" id="inputInstructions" />
+          <label htmlFor="instructions">Instructions</label>
+          <textarea 
+            id="instructions" 
+            className="inputArea" 
+            value={recipe.instructions} 
+            onChange={handleChange} 
+          />
         </div>
 
-        <input type="submit" text="Submit" />
+        <input type="submit" text="Submit" onClick={handleSubmit}/>
       </form>
     </div>
   )
@@ -63,7 +94,7 @@ function Recipe(props){
     )
   } else if (props.activeRecipeIndex===-2) {
     return (
-      <AddRecipe />
+      <AddRecipe addRecipe={props.addRecipe} />
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
@@ -131,11 +162,21 @@ function App() {
   const [activeRecipeIndex, setActiveRecipeIndex] = useState(-1);
 
   // Functions
-  function callAPI(){
+  function getRecipes(){
     fetch("http://localhost:3003/recipes")
       .then(res => res.json())
       .then(data => setRecipes(data.recipes))
       .catch(err => err)
+  }
+
+
+  function addRecipe(recipeJson){
+    fetch("http://localhost:3003/recipes", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(recipeJson)
+    })
+      .then(res => console.log(res))
   }
 
   function handleClick(e){
@@ -148,7 +189,7 @@ function App() {
 
   // Effects
   useEffect(()=>{
-    callAPI()
+    getRecipes()
   },[])
 
   // Arrow Art
@@ -166,6 +207,7 @@ function App() {
       <Recipe 
         recipes={recipes}
         activeRecipeIndex={activeRecipeIndex}
+        addRecipe={addRecipe}
       />
     </div>
   );
