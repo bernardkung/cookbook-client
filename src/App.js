@@ -172,13 +172,15 @@ function App() {
 
 
   function addRecipe(recipeJson){
-    console.log(recipeJson)
+    console.log("Sending:", recipeJson)
     fetch("http://localhost:3003/recipes", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(recipeJson)
     })
-      .then(res => console.log(res))
+      .then(res => res.status === 200 ? res.json() : Promise.reject("Wrong status"))
+      .then(data => setRecipes(data.recipes))
+      .catch(error => console.warn(error))
   }
 
   function handleClick(e){
