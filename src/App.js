@@ -1,23 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 // import logo from './logo.svg';
 import './App.css';
-
-function RecipePart(props){
-// Parts can be Ingredients or Instructions
-  const partDivs = props.parts.map((part, p)=>{
-    return (
-      <li key={p} className={props.type}>{part}</li>
-    )
-  })
-  return (
-    <div className="recipePart" id={props.type}>
-      <h2 className="recipePartTitle">{props.type}</h2>
-      <ul className={props.type + "List"}>
-        {partDivs}
-      </ul>
-    </div>
-  )
-}
 
 function GetStarted(){
 // Default div to display in recipe if no recipe selected
@@ -28,7 +13,6 @@ function GetStarted(){
     </div>
   )
 }
-
 
 function AddRecipe(props){
   const [recipe, setRecipe] = useState({
@@ -41,7 +25,7 @@ function AddRecipe(props){
     event.persist()
     setRecipe(recipe=>({
       ...recipe,
-      [event.target.id]: event.target.value
+      [event.target.id]: DOMPurify.sanitize(event.target.value)
     }))
   }
 
@@ -84,6 +68,22 @@ function AddRecipe(props){
   )
 }
 
+function RecipePart(props){
+// Parts can be Ingredients or Instructions
+  // Render the raw recipe part into Markdown
+  const getMarkdownText = () => {
+    const rawMarkup = marked(props.part);
+    return { __html: rawMarkup };
+  };
+
+  return (
+    <div className="recipePart" id={props.type}>
+      <h2 className="recipePartTitle">{props.type}</h2>
+      <div className={props.type} dangerouslySetInnerHTML={getMarkdownText()}></div>
+    </div>
+  )
+}
+
 function Recipe(props){
 // Recipe is composed of a name, ingredients, and instructions
   if (props.activeRecipeIndex===-1){
@@ -105,11 +105,11 @@ function Recipe(props){
         </div>
         <div className="recipeBody">
           <RecipePart 
-            parts={activeRecipe.ingredients} 
+            part={activeRecipe.ingredients} 
             type="ingredients" 
           />
           <RecipePart 
-            parts={activeRecipe.instructions} 
+            part={activeRecipe.instructions} 
             type="instructions" 
           />
         </div>
@@ -172,6 +172,7 @@ function App() {
 
 
   function addRecipe(recipeJson){
+    console.log(recipeJson)
     fetch("http://localhost:3003/recipes", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
