@@ -132,7 +132,6 @@ function RecipeListItem(props){
 }
 
 function RecipeList(props){
-
   // Ran into error here where props.recipes was undefined
   const listItems = props.recipes.map((recipe, r)=>{
     return <RecipeListItem 
@@ -178,9 +177,22 @@ function App() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(recipeJson)
     })
-      .then(res => res.status === 200 ? res.json() : Promise.reject("Wrong status"))
-      .then(data => setRecipes(data.recipes))
-      .catch(error => console.warn(error))
+      .then(res => {
+        // This should be more robust at error handling
+        if (res.status===406) {
+          throw Error("Failed to save recipe!")
+        } else if (res.status===400) {
+          throw Error("Failed to refresh recipes!")
+        }
+        return res.json()
+      })
+      .then(data => {
+        setRecipes(data.recipes)
+      })
+      .catch(error => {
+        console.log("error")
+        console.warn(error)
+      })
   }
 
   function handleClick(e){
