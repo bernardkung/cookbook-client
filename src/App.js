@@ -3,6 +3,9 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 // import logo from './logo.svg';
 import './App.css';
+import editIcon from './images/icons8-edit-24.png'
+import trashIcon from './images/icons8-trash-24.png'
+// import searchIcon from './images/icons8-search-24.png'
 
 function GetStarted(){
 // Default div to display in recipe if no recipe selected
@@ -100,8 +103,12 @@ function Recipe(props){
     const activeRecipe = props.recipes[props.activeRecipeIndex]
     return (
       <div className="recipe">
-        <div className="recipeName">
+        <div className="recipeTitle">
           <h1 className="recipeName">{activeRecipe.name}</h1>
+          <div className="recipeActions">
+            <img src={editIcon}/>
+            <img src={trashIcon}/>
+          </div>
         </div>
         <div className="recipeBody">
           <RecipePart 

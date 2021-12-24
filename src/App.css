@@ -57,6 +57,13 @@ h1 {
   align-items: stretch;
 }
 
+.recipeTitle {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .recipeBody {
   height: 100%;
   width: 100%;
