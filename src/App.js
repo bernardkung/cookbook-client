@@ -17,7 +17,7 @@ function GetStarted(){
   )
 }
 
-function AddRecipe(props){
+function RecipeForm(props){
   const [recipe, setRecipe] = useState({
     "name": "",
     "ingredients": "",
@@ -97,7 +97,7 @@ function Recipe(props){
     )
   } else if (props.activeRecipeIndex===-2) {
     return (
-      <AddRecipe addRecipe={props.addRecipe} />
+      <RecipeForm addRecipe={props.addRecipe} />
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
@@ -106,8 +106,16 @@ function Recipe(props){
         <div className="recipeTitle">
           <h1 className="recipeName">{activeRecipe.name}</h1>
           <div className="recipeActions">
-            <img src={editIcon}/>
-            <img src={trashIcon}/>
+            <img 
+              id={props.activeRecipeIndex}
+              src={editIcon} 
+              onClick={props.handleEditRecipe}
+            />
+            <img 
+              id={props.activeRecipeIndex}
+              src={trashIcon} 
+              onClick={props.handleDeleteRecipe}
+            />
           </div>
         </div>
         <div className="recipeBody">
@@ -210,6 +218,20 @@ function App() {
     console.log("Mousing", e)
   }
 
+  function handleEditRecipe(e){
+    console.log("edit recipe")
+    console.log(e.target)
+  }
+
+  function handleDeleteRecipe(e){
+
+    console.log("delete recipe")
+    console.log(e.target.id, recipes[e.target.id], 'http://localholst:3003/recipes/' + e.target.id)
+
+    fetch('http://localholst:3003/recipes/' + e.target.id, { method: 'DELETE' })
+        .then(() => console.log("destroyed"))
+        .catch((err)=>console.log("not destroyed!"))
+  } 
   // Effects
   useEffect(()=>{
     getRecipes()
@@ -231,6 +253,8 @@ function App() {
         recipes={recipes}
         activeRecipeIndex={activeRecipeIndex}
         addRecipe={addRecipe}
+        handleEditRecipe={handleEditRecipe}
+        handleDeleteRecipe={handleDeleteRecipe}
       />
     </div>
   );
