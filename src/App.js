@@ -224,13 +224,18 @@ function App() {
   }
 
   function handleDeleteRecipe(e){
+    console.log("Sending DELETE request", recipes[e.target.id].name, "to", 'http://localhost:3003/recipes/' + e.target.id)
 
-    console.log("delete recipe")
-    console.log(e.target.id, recipes[e.target.id], 'http://localholst:3003/recipes/' + e.target.id)
-
-    fetch('http://localholst:3003/recipes/' + e.target.id, { method: 'DELETE' })
-        .then(() => console.log("destroyed"))
-        .catch((err)=>console.log("not destroyed!"))
+    fetch('http://localhost:3003/recipes/' + e.target.id, { method: 'DELETE' })
+        .then(res => {
+          if (!res.ok) {
+            throw Error("Response not okay!")
+          }
+          console.log("receiving", res.status)
+          return res.text()
+        })
+        .then(data=>console.log(data))
+        .catch((err)=>console.warn("not destroyed!", err))
   } 
   // Effects
   useEffect(()=>{
