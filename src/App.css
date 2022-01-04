@@ -121,6 +121,21 @@ h1 {
   align-items: stretch;
 }
 
+.inputButtonGroup {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.formButton {
+  width: 45%;
+}
+
+#submitButton {
+  background-color: #C4F1BE;
+}
+
 #inputNameGroup {
   flex-grow: 0;
 }

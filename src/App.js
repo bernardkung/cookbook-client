@@ -38,6 +38,15 @@ function RecipeForm(props){
     props.addRecipe(recipeJson)
   }
 
+  function handleCancel(){
+    setRecipe({
+      "name": "",
+      "ingredients": "",
+      "instructions": "",
+    })
+    props.setActiveRecipeIndex(-1)
+  }
+
   return (
     <div className="recipeForm">
       <h1>Add a New Recipe</h1>
@@ -65,7 +74,20 @@ function RecipeForm(props){
           />
         </div>
 
-        <input type="submit" text="Submit" onClick={handleSubmit}/>
+        <div className="inputButtonGroup" id="inputButtonGroup">
+          <button 
+            id="cancelButton" 
+            className="formButton" 
+            onClick={handleCancel}
+          >Cancel</button>
+          <input 
+            id="submitButton" 
+            className="formButton" 
+            type="submit" 
+            text="Submit" 
+            onClick={handleSubmit} 
+          />
+        </div>
       </form>
     </div>
   )
@@ -97,7 +119,10 @@ function Recipe(props){
     )
   } else if (props.activeRecipeIndex===-2) {
     return (
-      <RecipeForm addRecipe={props.addRecipe} />
+      <RecipeForm 
+        addRecipe={props.addRecipe} 
+        setActiveRecipeIndex={props.setActiveRecipeIndex}
+      />
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
@@ -254,6 +279,7 @@ function App() {
       <Recipe 
         recipes={recipes}
         activeRecipeIndex={activeRecipeIndex}
+        setActiveRecipeIndex={setActiveRecipeIndex}
         addRecipe={addRecipe}
         handleEditRecipe={handleEditRecipe}
         handleDeleteRecipe={handleDeleteRecipe}
