@@ -101,7 +101,6 @@ function Recipe(props){
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
-    console.log("rep", props.activeRecipeIndex, activeRecipe, props.recipes)
     return (
       <div className="recipe">
         <div className="recipeTitle">
@@ -179,12 +178,8 @@ function App() {
 
   // Functions
   function updateRecipes(data){
-    console.log("D:", data)
     // Strip out the filename portion
-    const recipes = data.recipes.map(r=>{
-      console.log(r)
-      return r.recipe
-    })
+    const recipes = data.recipes.map(r=>r.recipe)
     setRecipes(recipes)
   }
 
@@ -214,10 +209,7 @@ function App() {
       .then(data => {
         updateRecipes(data)
       })
-      .catch(error => {
-        console.log("error")
-        console.warn(error)
-      })
+      .catch(error => console.warn(error))
   }
 
   function handleClick(e){
