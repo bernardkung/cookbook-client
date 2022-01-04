@@ -101,6 +101,7 @@ function Recipe(props){
     )
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
+    console.log("rep", props.activeRecipeIndex, activeRecipe, props.recipes)
     return (
       <div className="recipe">
         <div className="recipeTitle">
@@ -177,13 +178,22 @@ function App() {
   const [activeRecipeIndex, setActiveRecipeIndex] = useState(-1);
 
   // Functions
+  function updateRecipes(data){
+    console.log("D:", data)
+    // Strip out the filename portion
+    const recipes = data.recipes.map(r=>{
+      console.log(r)
+      return r.recipe
+    })
+    setRecipes(recipes)
+  }
+
   function getRecipes(){
     fetch("http://localhost:3003/recipes")
       .then(res => res.json())
-      .then(data => setRecipes(data.recipes))
+      .then(data => updateRecipes(data))
       .catch(err => err)
   }
-
 
   function addRecipe(recipeJson){
     console.log("Sending:", recipeJson)
@@ -202,7 +212,7 @@ function App() {
         return res.json()
       })
       .then(data => {
-        setRecipes(data.recipes)
+        updateRecipes(data)
       })
       .catch(error => {
         console.log("error")
@@ -212,10 +222,6 @@ function App() {
 
   function handleClick(e){
     setActiveRecipeIndex(e)
-  }
-
-  function handleMouseover(e){
-    console.log("Mousing", e)
   }
 
   function handleEditRecipe(e){
@@ -231,12 +237,12 @@ function App() {
           if (!res.ok) {
             throw Error("Response not okay!")
           }
-          console.log("receiving", res.status)
-          return res.text()
+          return res.json()
         })
-        .then(data=>console.log(data))
+        .then(data=>updateRecipes(data))
         .catch((err)=>console.warn("not destroyed!", err))
-  } 
+  }
+
   // Effects
   useEffect(()=>{
     getRecipes()
@@ -252,7 +258,6 @@ function App() {
         activeRecipeIndex={activeRecipeIndex}
         setActiveRecipeIndex={setActiveRecipeIndex}
         handleClick={handleClick}
-        handleMouseover={handleMouseover}
       />
       <Recipe 
         recipes={recipes}
