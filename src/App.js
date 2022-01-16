@@ -37,7 +37,12 @@ function RecipeForm(props){
   function handleSubmit(event) {
     event.preventDefault()
     const recipeJson = {recipe}
-    props.addRecipe(recipeJson)
+    // check if this is an edit recipe, or add recipe
+    if (props.recipe){
+      props.updateRecipe(recipeJson)
+    } else {
+      props.addRecipe(recipeJson)
+    }
   }
 
   function handleCancel(){
@@ -264,6 +269,10 @@ function App() {
       .catch(error => console.warn(error))
   }
 
+  function updateRecipe(recipeJson){
+    console.log("Updating:", recipeJson)
+  }
+
   function handleClick(e){
     setActiveRecipeIndex(e)
   }
@@ -311,6 +320,7 @@ function App() {
         showForm={showForm}
         setShowForm={setShowForm}
         addRecipe={addRecipe}
+        updateRecipe={updateRecipe}
         handleEditRecipe={handleEditRecipe}
         handleDeleteRecipe={handleDeleteRecipe}
       />
