@@ -10,9 +10,11 @@ import trashIcon from './images/icons8-trash-24.png'
 function GetStarted(){
 // Default div to display in recipe if no recipe selected
   return (
-    <div className="getStarted">
-      <h1>Select a Recipe</h1>
-      <p>Get started by selecting a recipe!</p>
+    <div className="recipe">
+      <div className="getStarted">
+        <h1>Select a Recipe</h1>
+        <p>Get started by selecting a recipe!</p>
+      </div>
     </div>
   )
 }
@@ -44,8 +46,15 @@ function RecipeForm(props){
       "ingredients": "",
       "instructions": "",
     })
-    props.setActiveRecipeIndex(-1)
+    props.setShowForm(false)
   }
+
+  // If coming from edit, then initialize the form with existing recipe
+  useEffect(()=>{
+    if (props.recipe){
+      setRecipe(props.recipe)
+    }
+  }, [])
 
   return (
     <div className="recipeForm">
@@ -110,51 +119,68 @@ function RecipePart(props){
 }
 
 function Recipe(props){
+  return (
+    <div className="recipe">
+      <div className="recipeTitle">
+        <h1 className="recipeName">{props.recipe.name}</h1>
+        <div className="recipeActions">
+          <img 
+            id={props.activeRecipeIndex}
+            src={editIcon} 
+            onClick={props.handleEditRecipe}
+          />
+          <img 
+            id={props.activeRecipeIndex}
+            src={trashIcon} 
+            onClick={props.handleDeleteRecipe}
+          />
+        </div>
+      </div>
+      <div className="recipeBody">
+        <RecipePart 
+          part={props.recipe.ingredients} 
+          type="ingredients" 
+        />
+        <RecipePart 
+          part={props.recipe.instructions} 
+          type="instructions" 
+        />
+      </div>
+    </div>
+  )
+}
+
+function MainPage(props){
 // Recipe is composed of a name, ingredients, and instructions
   if (props.activeRecipeIndex===-1){
-    return (
-      <div className="recipe">
-        <GetStarted />
-      </div>
-    )
-  } else if (props.activeRecipeIndex===-2) {
-    return (
-      <RecipeForm 
-        addRecipe={props.addRecipe} 
+    if (!props.showForm){
+      return <GetStarted />
+    } else {
+      return <RecipeForm 
+        activeRecipeIndex={props.activeRecipeIndex}
         setActiveRecipeIndex={props.setActiveRecipeIndex}
+        addRecipe={props.addRecipe}
+        updateRecipe={props.updateRecipe}
       />
-    )
+    }
   } else {
     const activeRecipe = props.recipes[props.activeRecipeIndex]
-    return (
-      <div className="recipe">
-        <div className="recipeTitle">
-          <h1 className="recipeName">{activeRecipe.name}</h1>
-          <div className="recipeActions">
-            <img 
-              id={props.activeRecipeIndex}
-              src={editIcon} 
-              onClick={props.handleEditRecipe}
-            />
-            <img 
-              id={props.activeRecipeIndex}
-              src={trashIcon} 
-              onClick={props.handleDeleteRecipe}
-            />
-          </div>
-        </div>
-        <div className="recipeBody">
-          <RecipePart 
-            part={activeRecipe.ingredients} 
-            type="ingredients" 
-          />
-          <RecipePart 
-            part={activeRecipe.instructions} 
-            type="instructions" 
-          />
-        </div>
-      </div>
-    )
+    if (props.showForm){
+      return <RecipeForm 
+        recipe={activeRecipe}
+        activeRecipeIndex={props.activeRecipeIndex}
+        setActiveRecipeIndex={props.setActiveRecipeIndex}
+        addRecipe={props.addRecipe}
+        updateRecipe={props.updateRecipe}
+      />
+    } else {
+      return <Recipe 
+        recipe={activeRecipe}
+        activeRecipeIndex={props.activeRecipeIndex}
+        handleDeleteRecipe={props.handleDeleteRecipe}
+        handleEditRecipe={props.handleEditRecipe}
+      />
+    }
   }
 }
 
@@ -198,12 +224,13 @@ function RecipeList(props){
 }
 
 function App() {
-  const [recipes, setRecipes] = useState([]);
-  const [activeRecipeIndex, setActiveRecipeIndex] = useState(-1);
+  const [recipes, setRecipes] = useState([])
+  const [activeRecipeIndex, setActiveRecipeIndex] = useState(-1)
+  const [showForm, setShowForm] = useState(false)
 
   // Functions
   function updateRecipes(data){
-    // Strip out the filename portion
+    // Keep only the recipe part of the recipes, removing filenames
     const recipes = data.recipes.map(r=>r.recipe)
     setRecipes(recipes)
   }
@@ -242,8 +269,9 @@ function App() {
   }
 
   function handleEditRecipe(e){
-    console.log("edit recipe")
-    console.log(e.target)
+    console.log("Edit Recipe clicked")
+    // Trigger the form to show
+    setShowForm(true)
   }
 
   function handleDeleteRecipe(e){
@@ -276,10 +304,12 @@ function App() {
         setActiveRecipeIndex={setActiveRecipeIndex}
         handleClick={handleClick}
       />
-      <Recipe 
+      <MainPage 
         recipes={recipes}
         activeRecipeIndex={activeRecipeIndex}
         setActiveRecipeIndex={setActiveRecipeIndex}
+        showForm={showForm}
+        setShowForm={setShowForm}
         addRecipe={addRecipe}
         handleEditRecipe={handleEditRecipe}
         handleDeleteRecipe={handleDeleteRecipe}
