@@ -16,14 +16,15 @@ import MainPage from "./Components/MainPage"
 
 function App() {
   const [recipes, setRecipes] = useState([])
-  const [activeRecipeIndex, setActiveRecipeIndex] = useState(-1)
+  const [activeRecipeId, setActiveRecipeId] = useState(-1)
   const [showForm, setShowForm] = useState(false)
 
   // Functions
   function refreshRecipes(data){
-    // Keep only the recipe part of the recipes, removing filenames
     const recipes = data.recipes.filter(r=>r.name)
+    console.log(recipes)
     setRecipes(recipes)
+    setShowForm(false)
   }
 
   async function getRecipes(){
@@ -38,21 +39,18 @@ function App() {
   }
 
   function addRecipe(recipeJson){
-    console.log("Sending:", recipeJson)
     fetch("http://localhost:3003/recipes", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(recipeJson)
     })
       .then(res => {
-        console.log("1", res)
         // This should be more robust at error handling
         if (res.status===406) {
           throw Error("Failed to save recipe!")
         } else if (res.status===400) {
           throw Error("Failed to refresh recipes!")
         }
-        console.log("res", res)
         return res.json()
       })
       .then(data => {
@@ -61,30 +59,50 @@ function App() {
       .catch(error => console.warn(error))
   }
 
-  function updateRecipe(recipeJson, recipeId){
-    console.log("Updating:", recipeId, recipeJson)
-    fetch('http://localhost:3003/recipes/' + recipeId)
+  function updateRecipe(recipeJson){
+    console.log("Updating:", recipeJson._id, recipeJson)
+    fetch('http://localhost:3003/recipes/' + recipeJson._id, {
+      method: "PUT",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(recipeJson)
+    })
+      .then(res => {
+        // This should be more robust at error handling
+        if (res.status===406) {
+          throw Error("Failed to save recipe!")
+        } else if (res.status===400) {
+          throw Error("Failed to refresh recipes!")
+        }
+        return res.json()
+      })
+      .then(data => {
+        refreshRecipes(data)
+      })
+      .catch(error => console.warn(error))
   }
 
   function handleClick(id, state=false){
-    setActiveRecipeIndex(id)
+    console.log("setting active id:", id)
+    setActiveRecipeId(id)
     setShowForm(state)
   }
 
   function handleEditRecipe(e){
-    console.log("Edit Recipe clicked")
-    // Trigger the form to show
     setShowForm(true)
   }
 
   function handleDeleteRecipe(e){
-    console.log("Sending DELETE request", recipes[e.target.id].name, "to", 'http://localhost:3003/recipes/' + e.target.id)
-
-    fetch('http://localhost:3003/recipes/' + e.target.id, { method: 'DELETE' })
+    console.log(e.target)
+    // Delete currently active recipe
+    fetch('http://localhost:3003/recipes/' + activeRecipeId, { method: 'DELETE' })
         .then(res => {
           if (!res.ok) {
             throw Error("Response not okay!")
           }
+          // Reset Main Page to Getting Started
+          setActiveRecipeId(-1)
+          setShowForm(false)
+          
           return res.json()
         })
         .then(data=>refreshRecipes(data))
@@ -98,11 +116,7 @@ function App() {
     .then(res => {
       return res.json()
     })
-    .then(data => {
-      refreshRecipes(data)
-      // const recipes = data.recipes.filter(r=>r.name)
-      // setRecipes(recipes)
-    })
+    .then(data => refreshRecipes(data))
     .catch(err => console.warn(err))
 
   },[])
@@ -114,14 +128,14 @@ function App() {
     <div className="App">
       <RecipeList
         recipes={recipes}
-        activeRecipeIndex={activeRecipeIndex}
-        setActiveRecipeIndex={setActiveRecipeIndex}
+        activeRecipeId={activeRecipeId}
+        setActiveRecipeId={setActiveRecipeId}
         handleClick={handleClick}
       />
       <MainPage 
         recipes={recipes}
-        activeRecipeIndex={activeRecipeIndex}
-        setActiveRecipeIndex={setActiveRecipeIndex}
+        activeRecipeId={activeRecipeId}
+        setActiveRecipeId={setActiveRecipeId}
         showForm={showForm}
         setShowForm={setShowForm}
         addRecipe={addRecipe}

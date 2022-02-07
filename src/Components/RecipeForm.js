@@ -3,9 +3,12 @@ import DOMPurify from 'dompurify';
 
 function RecipeForm(props){
     const [recipe, setRecipe] = useState({
+      "_id": "",
       "name": "",
       "ingredients": "",
       "instructions": "",
+      "createdAt": "",
+      "updatedAt": "",
     })
   
     function handleChange(event) {
@@ -18,21 +21,20 @@ function RecipeForm(props){
   
     function handleSubmit(event) {
       event.preventDefault()
-      const recipeJson = {recipe}
+      // const recipeJson = {recipe}
       // check if this is an edit recipe, or add recipe
       if (props.recipe){
-        props.updateRecipe(recipeJson)
+        props.updateRecipe(recipe)
       } else {
-        props.addRecipe(recipeJson)
+        props.addRecipe({
+          'name':recipe.name,
+          'ingredients':recipe.ingredients,
+          'instructions':recipe.instructions
+        })
       }
     }
   
     function handleCancel(){
-      setRecipe({
-        "name": "",
-        "ingredients": "",
-        "instructions": "",
-      })
       props.setShowForm(false)
     }
   

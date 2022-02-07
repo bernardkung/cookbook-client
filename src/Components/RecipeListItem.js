@@ -3,9 +3,9 @@ import React from 'react'
 function RecipeListItem(props){
     return (
       <div 
-        className={`listItem ${props.index===props.activeRecipeIndex ? "activeItem" : ""}`}
-        key={props.index}
-        onClick={()=>props.handleClick(props.index)}
+        className={`listItem ${props.index===props.activeRecipeId ? "activeItem" : ""}`}
+        key={props.recipe._id}
+        onClick={()=>props.handleClick(props.recipe._id, false)}
       >
         {props.recipe.name}
       </div>

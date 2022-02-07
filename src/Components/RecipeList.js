@@ -7,10 +7,10 @@ function RecipeList(props){
   const listItems = props.recipes.map((recipe, r)=>{
     return <RecipeListItem 
       handleClick={props.handleClick}
-      activeRecipeIndex={props.activeRecipeIndex}
+      activeRecipeId={props.activeRecipeId}
       recipe={recipe}
-      index={r}
-      key={r}
+      index={recipe._id}
+      key={recipe._id}
     />
   })
   const addItem = <div 

@@ -4,29 +4,30 @@ import RecipeForm from "../Components/RecipeForm"
 import Recipe from "../Components/Recipe"
 
 function MainPage(props){
-    console.log(props.activeRecipeIndex)
+  console.log(props.activeRecipeId)
   // Recipe is composed of a name, ingredients, and instructions
-    if (props.activeRecipeIndex===-1){
+    if (props.activeRecipeId===-1){
       if (!props.showForm){
         console.log("Get Started")
         return <GetStarted />
       } else {
         console.log("New Recipe")
         return <RecipeForm 
-          activeRecipeIndex={props.activeRecipeIndex}
-          setActiveRecipeIndex={props.setActiveRecipeIndex}
+          activeRecipeId={props.activeRecipeId}
+          setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
           updateRecipe={props.updateRecipe}
         />
       }
     } else {
-      const activeRecipe = props.recipes[props.activeRecipeIndex]
+      const activeRecipe = props.recipes.find(recipe=>recipe._id===props.activeRecipeId)
+      console.log(activeRecipe)
       if (props.showForm){
         console.log("Edit Recipe")
         return <RecipeForm 
           recipe={activeRecipe}
-          activeRecipeIndex={props.activeRecipeIndex}
-          setActiveRecipeIndex={props.setActiveRecipeIndex}
+          activeRecipeId={props.activeRecipeId}
+          setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
           updateRecipe={props.updateRecipe}
         />
@@ -34,7 +35,7 @@ function MainPage(props){
         console.log("Display Recipe")
         return <Recipe 
           recipe={activeRecipe}
-          activeRecipeIndex={props.activeRecipeIndex}
+          activeRecipeId={props.activeRecipeId}
           handleDeleteRecipe={props.handleDeleteRecipe}
           handleEditRecipe={props.handleEditRecipe}
         />
