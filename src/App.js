@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 
 // import logo from './logo.svg';
 import './App.css';
-import editIcon from './images/icons8-edit-24.png'
-import trashIcon from './images/icons8-trash-24.png'
+// import editIcon from './images/icons8-edit-24.png'
+// import trashIcon from './images/icons8-trash-24.png'
 // import searchIcon from './images/icons8-search-24.png'
 
 import RecipeList from "./Components/RecipeList"
@@ -102,7 +102,7 @@ function App() {
           // Reset Main Page to Getting Started
           setActiveRecipeId(-1)
           setShowForm(false)
-          
+
           return res.json()
         })
         .then(data=>refreshRecipes(data))
