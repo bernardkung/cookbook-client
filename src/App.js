@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import DOMPurify from 'dompurify';
-// import { marked } from 'marked';
 
 // import logo from './logo.svg';
 import './App.css';
@@ -10,9 +8,6 @@ import './App.css';
 
 import RecipeList from "./Components/RecipeList"
 import MainPage from "./Components/MainPage"
-// import GetStarted from "./Components/GetStarted"
-// import RecipeForm from "./Components/RecipeForm"
-// import Recipe from "./Components/Recipe"
 
 function App() {
   const [recipes, setRecipes] = useState([])
@@ -20,8 +15,9 @@ function App() {
   const [showForm, setShowForm] = useState(false)
 
   // Functions
-  function refreshRecipes(data){
-    const recipes = data.recipes.filter(r=>r.name)
+  function refreshRecipes(res){
+    // This could be better at handling errors and unexpected recipes
+    const recipes = res.data.filter(r=>r.name)
     console.log(recipes)
     setRecipes(recipes)
     setShowForm(false)
@@ -60,7 +56,6 @@ function App() {
   }
 
   function updateRecipe(recipeJson){
-    console.log("Updating:", recipeJson._id, recipeJson)
     fetch('http://localhost:3003/recipes/' + recipeJson._id, {
       method: "PUT",
       headers: {'Content-Type': 'application/json'},
@@ -82,12 +77,13 @@ function App() {
   }
 
   function handleClick(id, state=false){
-    console.log("setting active id:", id)
+    // When a recipeListItem/addRecipe is clicked\
     setActiveRecipeId(id)
     setShowForm(state)
   }
 
   function handleEditRecipe(e){
+    // When edit button on a recipe is clicked
     setShowForm(true)
   }
 

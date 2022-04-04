@@ -9,8 +9,8 @@ function RecipeList(props){
       handleClick={props.handleClick}
       activeRecipeId={props.activeRecipeId}
       recipe={recipe}
-      index={recipe._id}
-      key={recipe._id}
+      index={recipe.id}
+      key={recipe.id}
     />
   })
   const addItem = <div 
