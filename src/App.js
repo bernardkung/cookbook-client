@@ -18,7 +18,6 @@ function App() {
   function refreshRecipes(res){
     // This could be better at handling errors and unexpected recipes
     const recipes = res.data.filter(r=>r.name)
-    console.log(recipes)
     setRecipes(recipes)
     setShowForm(false)
   }
@@ -88,7 +87,6 @@ function App() {
   }
 
   function handleDeleteRecipe(e){
-    console.log(e.target)
     // Delete currently active recipe
     fetch('http://localhost:3003/recipes/' + activeRecipeId, { method: 'DELETE' })
         .then(res => {
