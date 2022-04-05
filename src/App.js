@@ -56,7 +56,7 @@ function App() {
   }
 
   function updateRecipe(recipeJson){
-    fetch('http://localhost:3003/recipes/' + recipeJson._id, {
+    fetch('http://localhost:3003/recipes/' + recipeJson.id, {
       method: "PUT",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(recipeJson)
