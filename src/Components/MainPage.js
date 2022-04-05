@@ -4,7 +4,6 @@ import RecipeForm from "../Components/RecipeForm"
 import Recipe from "../Components/Recipe"
 
 function MainPage(props){
-  console.log("active recipe id:", props.activeRecipeId)
   // Recipe is composed of a name, ingredients, and instructions
     if (props.activeRecipeId===-1){
       if (!props.showForm){
