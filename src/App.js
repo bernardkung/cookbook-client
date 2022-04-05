@@ -22,16 +22,14 @@ function App() {
     setShowForm(false)
   }
 
-  async function getRecipes(){
-    fetch("http://localhost:3003/recipes")
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        refreshRecipes(data)
-      })
-      .catch(err => err)
-  }
+  // async function getRecipes(){
+  //   fetch("http://localhost:3003/recipes")
+  //   .then(res => {
+  //     return res.json()
+  //   })
+  //   .then(data => refreshRecipes(data))
+  //   .catch(err => console.warn(err))
+  // }
 
   function addRecipe(recipeJson){
     fetch("http://localhost:3003/recipes", {
@@ -104,15 +102,13 @@ function App() {
   }
 
   // Effects
-  useEffect(async ()=>{
-
+  useEffect(()=>{
     fetch("http://localhost:3003/recipes")
     .then(res => {
       return res.json()
     })
     .then(data => refreshRecipes(data))
     .catch(err => console.warn(err))
-
   },[])
 
   // Arrow Art

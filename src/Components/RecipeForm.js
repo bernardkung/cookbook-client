@@ -38,8 +38,8 @@ function RecipeForm(props){
       props.setShowForm(false)
     }
   
-    // If coming from edit, then initialize the form with existing recipe
-    useEffect(()=>{
+    // If editing, preload RecipeForm with active recipe
+    useEffect((props)=>{
       if ('recipe' in props){
         setRecipe(props.recipe)
       }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function GetStarted(){
     // Default div to display in recipe if no recipe selected

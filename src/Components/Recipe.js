@@ -13,11 +13,13 @@ function Recipe(props){
           <img 
             // id={props.activeRecipeId}
             src={editIcon} 
+            alt="edit button"
             onClick={props.handleEditRecipe}
           />
           <img 
             id={props.activeRecipeId}
             src={trashIcon} 
+            alt="delete button"
             onClick={props.handleDeleteRecipe}
           />
         </div>
