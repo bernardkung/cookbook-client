@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 
 function RecipeForm(props){
-    const [recipe, setRecipe] = useState({
-      "_id": "",
+    const blankRecipe = {
+      "id": "",
       "name": "",
       "ingredients": "",
       "instructions": "",
       "createdAt": "",
       "updatedAt": "",
-    })
+    }
+
+    const [recipe, setRecipe] = useState(blankRecipe)
   
     function handleChange(event) {
       event.persist()
@@ -37,13 +39,20 @@ function RecipeForm(props){
     function handleCancel(){
       props.setShowForm(false)
     }
-  
-    // If editing, preload RecipeForm with active recipe
-    useEffect(()=>{
-      if ('recipe' in props){
-        setRecipe(props.recipe)
+
+    function changeActiveRecipe(recipes, activeId){
+      let activeRecipe = recipes.find((r)=>r.id===activeId)
+      if (activeRecipe) {
+        setRecipe(activeRecipe)
+      } else {
+        setRecipe(blankRecipe)
       }
-    }, [props])
+    }
+  
+    // Set active recipe
+    useEffect(()=>{
+      changeActiveRecipe(props.recipes, props.activeRecipeId)
+    }, [props.activeRecipeId])
   
     return (
       <div className="recipeForm">

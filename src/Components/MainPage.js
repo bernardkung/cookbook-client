@@ -10,6 +10,7 @@ function MainPage(props){
         return <GetStarted />
       } else {
         return <RecipeForm 
+          recipes={props.recipes}
           activeRecipeId={props.activeRecipeId}
           setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
@@ -21,6 +22,7 @@ function MainPage(props){
       if (props.showForm){
         return <RecipeForm 
           recipe={activeRecipe}
+          recipes={props.recipes}
           activeRecipeId={props.activeRecipeId}
           setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
