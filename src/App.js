@@ -66,7 +66,6 @@ function App() {
 
   function handleClick(id, state=false){
     // When a recipeListItem/addRecipe is clicked
-    console.log(id)
     setActiveRecipeId(id)
     setShowForm(state)
   }

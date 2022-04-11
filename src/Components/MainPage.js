@@ -20,8 +20,7 @@ function MainPage(props){
     } else {
       const activeRecipe = props.recipes.find(recipe=>recipe.id===props.activeRecipeId)
       if (props.showForm){
-        return <RecipeForm 
-          recipe={activeRecipe}
+        return <RecipeForm
           recipes={props.recipes}
           activeRecipeId={props.activeRecipeId}
           setActiveRecipeId={props.setActiveRecipeId}
