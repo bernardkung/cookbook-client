@@ -39,11 +39,11 @@ function RecipeForm(props){
     }
   
     // If editing, preload RecipeForm with active recipe
-    useEffect((props)=>{
+    useEffect(()=>{
       if ('recipe' in props){
         setRecipe(props.recipe)
       }
-    }, [])
+    }, [props])
   
     return (
       <div className="recipeForm">

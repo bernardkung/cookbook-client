@@ -22,15 +22,6 @@ function App() {
     setShowForm(false)
   }
 
-  // async function getRecipes(){
-  //   fetch("http://localhost:3003/recipes")
-  //   .then(res => {
-  //     return res.json()
-  //   })
-  //   .then(data => refreshRecipes(data))
-  //   .catch(err => console.warn(err))
-  // }
-
   function addRecipe(recipeJson){
     fetch("http://localhost:3003/recipes", {
       method: "POST",
