@@ -41,7 +41,7 @@ function RecipeForm(props){
     }
 
     function changeActiveRecipe(recipes, activeId){
-      let activeRecipe = recipes.find((r)=>r.id===activeId)
+      const activeRecipe = recipes.find((r)=>r.id===activeId)
       if (activeRecipe) {
         setRecipe(activeRecipe)
       } else {
