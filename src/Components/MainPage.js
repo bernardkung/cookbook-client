@@ -4,6 +4,7 @@ import RecipeForm from "../Components/RecipeForm"
 import Recipe from "../Components/Recipe"
 
 function MainPage(props){
+  console.log(props.showForm, props.activeRecipeId)
   // Recipe is composed of a name, ingredients, and instructions
     if (props.activeRecipeId===-1){
       if (!props.showForm){
@@ -15,6 +16,7 @@ function MainPage(props){
           setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
           updateRecipe={props.updateRecipe}
+          setShowForm={props.setShowForm}
         />
       }
     } else {
@@ -26,6 +28,7 @@ function MainPage(props){
           setActiveRecipeId={props.setActiveRecipeId}
           addRecipe={props.addRecipe}
           updateRecipe={props.updateRecipe}
+          setShowForm={props.setShowForm}
         />
       } else {
         return <Recipe 

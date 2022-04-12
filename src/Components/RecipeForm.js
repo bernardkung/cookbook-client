@@ -37,7 +37,8 @@ function RecipeForm(props){
       }
     }
   
-    function handleCancel(){
+    function handleCancel(event){
+      event.preventDefault()
       props.setShowForm(false)
     }
 
