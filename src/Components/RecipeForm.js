@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 
 function RecipeForm(props){
-    const blankRecipe = {
-      "id": "",
-      "name": "",
-      "ingredients": "",
-      "instructions": "",
-      "createdAt": "",
-      "updatedAt": "",
-    }
+    const blankRecipe = useMemo(()=>{
+      return {
+        "id": "",
+        "name": "",
+        "ingredients": "",
+        "instructions": "",
+        "createdAt": "",
+        "updatedAt": "",
+    }}, [])
 
     const [recipe, setRecipe] = useState(blankRecipe)
   
@@ -40,19 +41,20 @@ function RecipeForm(props){
       props.setShowForm(false)
     }
 
-    function changeActiveRecipe(recipes, activeId){
-      const activeRecipe = recipes.find((r)=>r.id===activeId)
-      if (activeRecipe) {
-        setRecipe(activeRecipe)
-      } else {
-        setRecipe(blankRecipe)
-      }
-    }
   
     // Set active recipe
     useEffect(()=>{
+      function changeActiveRecipe(recipes, activeId){
+        const activeRecipe = recipes.find((r)=>r.id===activeId)
+        if (activeRecipe) {
+          setRecipe(activeRecipe)
+        } else {
+          setRecipe(blankRecipe)
+        }
+      }
+
       changeActiveRecipe(props.recipes, props.activeRecipeId)
-    }, [props.activeRecipeId])
+    }, [props, blankRecipe])
   
     return (
       <div className="recipeForm">
